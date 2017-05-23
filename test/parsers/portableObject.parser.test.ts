@@ -62,4 +62,26 @@ describe("Portable Object Parser", () => {
 
         chai.expect(mockFile.references).to.have.length(1);
     });
+
+    it("should be able to parse duplicated translations", () => {
+        const mocksPaths = [
+            path.join(__dirname, "../mocks/duplicatedTextExample/mock.po")
+        ];
+        let parser = new PortableObjectParser("test", mocksPaths);
+        let pack = parser.run();
+
+        chai.expect(pack).to.exist;
+        chai.expect(pack.files).to.exist;
+        chai.expect(pack.files).to.have.lengthOf(1);
+
+        let referenceFile = pack.files.find((file) => {
+            return file.uniqueFileName === "mock.ts";
+        });
+
+        chai.expect(referenceFile).to.exist;
+        chai.expect(referenceFile.references).to.be.empty;
+
+        chai.expect(referenceFile.messages).to.not.be.empty;
+        chai.expect(referenceFile.messages).to.have.lengthOf(2);
+    })
 });

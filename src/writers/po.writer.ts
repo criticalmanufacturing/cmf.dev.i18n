@@ -65,6 +65,7 @@ msgstr ""
             result.push(`#. ${TRANSLATOR_NOTES[TranslatorNotes.AutomaticTranslation]}`);
         } else if (translatedMessage !== null) {
             translatedText = translatedMessage.text;
+            if (this._language !== "en-US") translatedText = "";
         }
 
         // If there is a comment on the resource, insert it as msg context
