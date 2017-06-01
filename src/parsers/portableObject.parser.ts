@@ -80,12 +80,12 @@ export class PortableObjectParser implements Parser {
             let message = new Message(fileInfo.objectPath);
             let translation = new Translation(fileInfo.details.language, translationInfo.value, notes.indexOf(TranslatorNotes.AutomaticTranslation) >= 0);
             message.addOrUpdateTranslation(translation);
-        
+
             let file = new File(fileInfo.filePath);
 
             if (fileInfo.references && fileInfo.references.length > 0) {
                 for (let ref of fileInfo.references) {
-                    file.addReference(ref);
+                    file.addOrUpdateReference(ref);
                 }
             }
 
@@ -112,20 +112,30 @@ export class PortableObjectParser implements Parser {
             let objectPath = fileAndObjectMatch[2];
 
             // Extract file information from row
+            // Accept single or multiple lines for references
             // # AddReference | import i18n from "./reference.default";
+            // # AddReference | import i18n from "./reference.default" | filePath;
 
             let references: string[] = [];
 
-            let referencesMatch = info.match(/^# (.+) \| (.+)$/gm);
+            let referencesMatch = info.match(/^# (.*?) \| (.+)$/gm);
             if (referencesMatch != null && referencesMatch.length > 0) {
 
                 for (let i = 0; i < referencesMatch.length; i++) {
-                    let ref = /^# (.+) \| (.+)$/.exec(referencesMatch[i]);
+                    // Get type of comment first and its params
+                    let ref = /^# (.*?) \| (.+)$/.exec(referencesMatch[i]);
+                    // Split the params by | and trim
+                    let params = ref[2].split("|").map(p => p.trim());
+
                     let typeOfComment = ref[1];
 
                     switch (typeOfComment) {
                         case "AddReference":
-                            references.push(ref[2]);
+                            // If there is a file, ignore references that are not for this file
+                            if (params[1] && params[1] !== filePath)
+                                continue;
+
+                            references.push(params[0]);
                             break;
                         default:
                             logger.warn(`Unknown type of entry found: '${typeOfComment}'`);
@@ -141,7 +151,7 @@ export class PortableObjectParser implements Parser {
                 references: references
             });
         }
-        
+
         return results;
     }
 

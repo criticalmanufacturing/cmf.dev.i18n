@@ -65,7 +65,6 @@ msgstr ""
             result.push(`#. ${TRANSLATOR_NOTES[TranslatorNotes.AutomaticTranslation]}`);
         } else if (translatedMessage !== null) {
             translatedText = translatedMessage.text;
-            if (this._language !== "en-US") translatedText = "";
         }
 
         // If there is a comment on the resource, insert it as msg context
@@ -96,7 +95,7 @@ msgstr ""
         let referenceBuffers: Buffer[] = null;
         if (file.references != null && file.references.length > 0) {
             referenceBuffers = file.references.map((ref) => {
-                return Buffer.concat([new Buffer(`# AddReference | ${ref}`), eolBuffer]);
+                return Buffer.concat([new Buffer(`# AddReference | ${ref} | ${file.translatedFileName(this._language)}`), eolBuffer]);
             });
         }
 
