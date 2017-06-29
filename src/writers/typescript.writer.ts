@@ -4,6 +4,7 @@ import { Package } from "../model/package";
 import { File } from "../model/file";
 import { Util } from "../util";
 import { Translation } from "../model/translation";
+import logger from "../logger/index";
 
 import * as beautify from "js-beautify";
 
@@ -37,7 +38,11 @@ export class TypescriptWriter implements Writer {
 
         file.messages.map((msg) => {
             let translation = msg.getTranslation(this._language);
-            if (translation.text != null && typeof translation.text === "string" && translation.text.length > 0) {
+
+            if (translation == null) {
+                logger.warn(`Translation not found for ${msg.id} (language: ${this._language})`);
+            }
+            else if (translation.text != null && typeof translation.text === "string" && translation.text.length > 0) {
                 this._util.setNestedPropertyByArray(literal, msg.id.split("."), translation, true);
             }
         });
