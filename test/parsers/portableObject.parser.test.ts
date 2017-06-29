@@ -34,7 +34,7 @@ describe("Portable Object Parser", () => {
         chai.expect(referenceFile.references).to.be.empty;
 
         chai.expect(referenceFile.messages).to.not.be.empty;
-        chai.expect(referenceFile.messages).to.have.lengthOf(2);
+        chai.expect(referenceFile.messages).to.have.lengthOf(3);
 
         let oneMessage = referenceFile.getMessage("ONE");
 
