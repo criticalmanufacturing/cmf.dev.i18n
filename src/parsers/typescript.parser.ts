@@ -144,7 +144,7 @@ export class TypescriptParser implements Parser {
 
                                     let { line, character } = tsSourceFile.getLineAndCharacterOfPosition(paNode.initializer.getStart());
 
-                                    let message = new Message(identifierPath.map((id) => id.name).concat([paNode.name.getText()]).join("."), messageDescription);
+                                    let message = new Message(identifierPath.map((id) => id.name).concat([paNode.name.getText().replace(/^["]+|["]+$/g, '')]).join("."), messageDescription);
                                     message.addOrUpdateTranslation(new Translation(this._currentLanguage, nodeText, false, line, character));
 
                                     file.addOrUpdateMessage(message);
@@ -159,7 +159,7 @@ export class TypescriptParser implements Parser {
 
                                     let { line, character } = tsSourceFile.getLineAndCharacterOfPosition(paNode.initializer.getStart());
 
-                                    let message = new Message(identifierPath.map((id) => id.name).concat([paNode.name.getText()]).join("."), messageDescription);
+                                    let message = new Message(identifierPath.map((id) => id.name).concat([paNode.name.getText().replace(/^["]+|["]+$/g, '')]).join("."), messageDescription);
                                     message.addOrUpdateTranslation(new Translation(this._currentLanguage, nodeText, true, line, character));
 
                                     file.addOrUpdateMessage(message);
@@ -168,7 +168,7 @@ export class TypescriptParser implements Parser {
                                 // If we have an object literal (ex: property1: {...})
                                 // We create a new node on our tree, and move to parse the object
                                 case ts.SyntaxKind.ObjectLiteralExpression:
-                                    identifierPath.push({name: paNode.name.getText(), node: paNode});
+                                    identifierPath.push({name: paNode.name.getText().replace(/^["]+|["]+$/g, ''), node: paNode});
                                     break;
                                 // Else, we log a warning for future reference and continue
                                 default:

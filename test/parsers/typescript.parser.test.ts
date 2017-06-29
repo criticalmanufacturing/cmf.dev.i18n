@@ -18,10 +18,13 @@ describe("Typescript parser", () => {
 
         let file = pack.files[0];
         chai.expect(file.uniqueFileName).to.contain("mock.ts");
-        chai.expect(file.messages).to.have.length(3);
+        chai.expect(file.messages).to.have.length(5);
 
         let messageOne = file.getMessage("ONE");
         chai.expect(messageOne).to.exist;
+
+        let messageFour = file.getMessage("FOUR");
+        chai.expect(messageFour).to.exist;
 
         // Verify comments interpretation
         chai.expect(messageOne.description).to.exist;
@@ -87,7 +90,8 @@ describe("Typescript parser", () => {
             "THREE",
             "FOUR",
             "FIVE",
-            "OTHER_NODE"
+            "OTHER_NODE",
+            "SIX"
         ];
 
         let ts = new TypescriptParser("test", mocksPaths);
