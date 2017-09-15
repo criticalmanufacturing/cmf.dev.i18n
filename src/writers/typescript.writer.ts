@@ -68,7 +68,7 @@ export class TypescriptWriter implements Writer {
             if (obj.isLiteral === true) {
                 return obj.text;
             } else {
-                return `"${obj.text}"`;
+                return `\`${obj.text}\``;
             }
         }
 
@@ -93,14 +93,14 @@ export class TypescriptWriter implements Writer {
 
             // Set key output;
             objKeys.forEach((key) => {
-                let keyOut = `"${key}"`;
+                let keyOut = `${key}`;
                 let keyValOut: any = obj[key];
 
                 // Skip functions and undefined properties
                 if (keyValOut instanceof Function || typeof keyValOut === undefined) {
                     arrOfKeyVal.push("");
                 } else if (typeof keyValOut === "string") {
-                    arrOfKeyVal.push(`${keyOut}: "${keyValOut}"`);
+                    arrOfKeyVal.push(`${keyOut}: \`${keyValOut}\``);
                 } else if (typeof keyValOut === "boolean" || typeof keyValOut === "number" || keyValOut === null) {
                     arrOfKeyVal.push(`${keyOut}: ${keyValOut}`);
                 // Check for nested objects, call recursively until no more objects
