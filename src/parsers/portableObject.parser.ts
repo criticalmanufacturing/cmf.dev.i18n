@@ -115,7 +115,7 @@ export class PortableObjectParser implements Parser {
                 let fileAndObjectMatch = /(.*)#(.*)/.exec(path.trim());
                 let filePath = fileAndObjectMatch[1];
                 let objectPath = fileAndObjectMatch[2];
-                if (objectPath == ".") console.log(path);
+                if (objectPath === ".") console.log(path);
 
                 // Extract file information from row
                 // Accept single or multiple lines for references
@@ -169,13 +169,22 @@ export class PortableObjectParser implements Parser {
      */
     private extractTranslation(entry: string): {value: string} {
         // Match full translation (may include multiple lines)
-        let fullTranslationMatch = /msgstr (.*)(\n".*")*/.exec(entry);
+        let fullTranslationMatch = /msgstr (.*)(\n"?.*"?)*/.exec(entry);
         let fullTranslationMessage = fullTranslationMatch[0];
 
         // Split translation by lines and parse each one
         let translatedMessage = "";
-        for (let translationLine of fullTranslationMessage.split('\n')) {
-            translatedMessage += /(?:msgstr )?"(.*)"/.exec(translationLine)[1];
+        for (let translationLine of fullTranslationMessage.split("\n")) {
+            let parsedLine = /(?:msgstr )?(.*)/.exec(translationLine)[1];
+            // Remove "" and trim the message
+            if (parsedLine.startsWith("\""))
+                parsedLine = parsedLine.slice(1);
+            if (parsedLine.endsWith("\""))
+                parsedLine = parsedLine.slice(0, -1);
+
+            parsedLine = parsedLine.trim();
+
+            translatedMessage += parsedLine;
         }
 
         return {
