@@ -151,8 +151,8 @@ export class TypescriptParser implements Parser {
                                 // If we have a property access (ex: property1: i18nControls.LABEL)
                                 // Or if we have a binary expression (ex: property1: i18nControls.LABEL + "abc")
                                 // We just use that value as the translation itself
-                                case ts.SyntaxKind.BinaryExpression:
                                 case ts.SyntaxKind.Identifier:
+                                case ts.SyntaxKind.BinaryExpression:
                                 case ts.SyntaxKind.PropertyAccessExpression:
                                 {
                                     let nodeText = paNode.initializer.getText();

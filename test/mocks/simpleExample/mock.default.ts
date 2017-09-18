@@ -8,5 +8,6 @@ export default {
     "FOUR": "Four",
     "FIVE": {
         ".1": "dot 1"
-    }
+    },
+    "SIX": 6 + ""
 };

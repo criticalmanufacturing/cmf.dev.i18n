@@ -18,7 +18,7 @@ describe("Typescript parser", () => {
 
         let file = pack.files[0];
         chai.expect(file.uniqueFileName).to.contain("mock.ts");
-        chai.expect(file.messages).to.have.length(5);
+        chai.expect(file.messages).to.have.length(6);
 
         let messageOne = file.getMessage("ONE");
         chai.expect(messageOne).to.exist;
@@ -33,6 +33,12 @@ describe("Typescript parser", () => {
         chai.expect(messageOne.hasTranslation("en-US")).to.be.true;
         chai.expect(messageOne.getTranslation("pt-PT").text).to.equal("Um");
         chai.expect(messageOne.hasTranslation("-1")).to.be.false;
+
+        // Check for binary
+        let messageSix = file.getMessage("SIX");
+        chai.expect(messageSix).to.exist;
+        chai.expect(messageSix.hasTranslation("en-US")).to.be.true;
+        chai.expect(messageSix.getTranslation("en-US").text).to.be.equal("6 + \"\"");
     });
 
     it("should parse the multilevelExample", () => {
