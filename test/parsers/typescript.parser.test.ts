@@ -117,4 +117,22 @@ describe("Typescript parser", () => {
         });
     });
 
+    it("should parse multilineExample", () => {
+        const mocksPaths = [
+            path.join(__dirname, "../mocks/multilineExample/mock.default.ts")
+        ];
+
+        let ts = new TypescriptParser("test", mocksPaths);
+        let pack = ts.run();
+
+        chai.expect(pack.files).to.have.length(1);
+
+        let file = pack.files[0];
+        chai.expect(file.uniqueFileName).to.contain("mock.ts");
+        chai.expect(file.messages).to.have.length(2);
+
+        let message = file.getMessage("MULTILINE");
+        chai.expect(message).to.exist;
+        chai.expect(message.getTranslation("en-US").text.toString()).to.be.equalIgnoreSpaces("My ${\"multi\" + \"\" + \"line\"}");
+    });
 });

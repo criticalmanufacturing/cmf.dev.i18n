@@ -52,10 +52,17 @@ export class TypescriptWriter implements Writer {
             indent_size: 4
         });
 
+        // Give an extra line in the end of the file
+        outputText += os.EOL;
+
         return {
             file: fileName,
             content: Buffer.concat([referenceBuffer, new Buffer(outputText)])
         };
+    }
+
+    private isTemplateString(text: string): boolean {
+        return text.indexOf("${") >= 0;
     }
 
     private stringifyTS(obj: any): string {
@@ -68,7 +75,7 @@ export class TypescriptWriter implements Writer {
             if (obj.isLiteral === true) {
                 return obj.text;
             } else {
-                return `\`${obj.text}\``;
+                return this.isTemplateString(obj.text) ? `\`${obj.text}\`` : `"${obj.text}"`;
             }
         }
 
@@ -100,7 +107,8 @@ export class TypescriptWriter implements Writer {
                 if (keyValOut instanceof Function || typeof keyValOut === undefined) {
                     arrOfKeyVal.push("");
                 } else if (typeof keyValOut === "string") {
-                    arrOfKeyVal.push(`${keyOut}: \`${keyValOut}\``);
+                    keyValOut = this.isTemplateString(keyValOut) ? `\`${keyValOut}\`` : `"${keyValOut}"`;
+                    arrOfKeyVal.push(`${keyOut}: ${keyValOut}`);
                 } else if (typeof keyValOut === "boolean" || typeof keyValOut === "number" || keyValOut === null) {
                     arrOfKeyVal.push(`${keyOut}: ${keyValOut}`);
                 // Check for nested objects, call recursively until no more objects
@@ -112,7 +120,7 @@ export class TypescriptWriter implements Writer {
         }
 
         throw new Error("Not Implemented");
-    };
+    }
 
 
     public run(): FileOutputInformation[] {

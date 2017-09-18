@@ -182,7 +182,7 @@ export class PortableObjectParser implements Parser {
             if (parsedLine.endsWith("\""))
                 parsedLine = parsedLine.slice(0, -1);
 
-            parsedLine = parsedLine.trim();
+            // parsedLine = parsedLine.trim();
 
             translatedMessage += parsedLine;
         }
