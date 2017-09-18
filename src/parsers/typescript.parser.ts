@@ -132,11 +132,9 @@ export class TypescriptParser implements Parser {
                             // Depending on the property initializer, we have to handle it differently
                             switch (paNode.initializer.kind) {
                                 // If we have a string literal (ex: property1: "Property1Value")
-                                // Or if we have a binary expression (ex: property1: i18nControls.LABEL + "abc")
                                 // Or if we have a template expression (ex: property1: `This is a template string ${i18nControls.LABEL}`)
                                 // We need to remove the first and last char, get the line and char position, and get the translation
                                 case ts.SyntaxKind.StringLiteral:
-                                case ts.SyntaxKind.BinaryExpression:
                                 case ts.SyntaxKind.TemplateExpression:
                                 {
                                     let nodeText = paNode.initializer.getText();
@@ -151,7 +149,9 @@ export class TypescriptParser implements Parser {
                                 }
                                     break;
                                 // If we have a property access (ex: property1: i18nControls.LABEL)
+                                // Or if we have a binary expression (ex: property1: i18nControls.LABEL + "abc")
                                 // We just use that value as the translation itself
+                                case ts.SyntaxKind.BinaryExpression:
                                 case ts.SyntaxKind.Identifier:
                                 case ts.SyntaxKind.PropertyAccessExpression:
                                 {
