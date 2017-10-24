@@ -27,6 +27,37 @@ describe("Portable Object writer", () => {
 
         chai.expect(output).to.exist;
         chai.expect(output).to.have.length(1);
+
+        const expectedResult = `
+        # Critical Manufacturing Translation File
+        # Copyright (C) 2017 Critical Manufacturing S.A.
+        # This file is distributed under the GPL 3.0 License
+        # For more information contact@criticalmanufacturing.com
+        # OriginalPackageName: test
+        # 
+        msgid ""
+        msgstr ""
+        "Project-Id-Version: @criticalmanufacturing/dev-i18n-transform 1.0.5 \\n"
+        "Report-Msgid-Bugs-To: support@criticalmanufacturing.com \\n"
+        "Language-Team: @criticalmanufacturing/dev-i18n-transform <info@criticalmanufacturing.com> \\n"
+        "Language: pt-PT \\n"
+        "MIME-Version: 1.0 \\n"
+        "Content-Type: text/plain; charset=UTF-8\\n"
+        
+        #: mocks\\duplicatedTextWithoutTranslationExample\\mock1.pt-PT.ts#TEXT
+        msgid "MyText"
+        msgstr "My translated text"
+        
+        #: mocks\\duplicatedTextWithoutTranslationExample\\mock1.pt-PT.ts#TEXT_DUPLICATED
+        msgid "MyText"
+        msgstr "My translated text"
+        
+        #: mocks\\duplicatedTextWithoutTranslationExample\\mock2.pt-PT.ts#TEXT
+        msgid "MyText"
+        msgstr "My translated text"
+        `;
+
+        chai.expect(output[0].content.toString()).to.equalIgnoreSpaces(expectedResult);
     });
 
 });

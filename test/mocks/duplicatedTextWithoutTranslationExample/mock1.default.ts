@@ -1,3 +1,4 @@
 export default {
-    TEXT: "MyText"
+    TEXT: "MyText",
+    TEXT_DUPLICATED: "MyText"
 };
