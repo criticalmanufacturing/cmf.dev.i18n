@@ -37,27 +37,30 @@ describe("Portable Object writer", () => {
         # 
         msgid ""
         msgstr ""
-        "Project-Id-Version: @criticalmanufacturing/dev-i18n-transform 1.0.5 \\n"
+        "Project-Id-Version: @criticalmanufacturing/dev-i18n-transform _ \\n"
         "Report-Msgid-Bugs-To: support@criticalmanufacturing.com \\n"
         "Language-Team: @criticalmanufacturing/dev-i18n-transform <info@criticalmanufacturing.com> \\n"
         "Language: pt-PT \\n"
         "MIME-Version: 1.0 \\n"
         "Content-Type: text/plain; charset=UTF-8\\n"
-        
+
         #: mocks\\duplicatedTextWithoutTranslationExample\\mock1.pt-PT.ts#TEXT
         msgid "MyText"
         msgstr "My translated text"
-        
+
         #: mocks\\duplicatedTextWithoutTranslationExample\\mock1.pt-PT.ts#TEXT_DUPLICATED
         msgid "MyText"
         msgstr "My translated text"
-        
+
         #: mocks\\duplicatedTextWithoutTranslationExample\\mock2.pt-PT.ts#TEXT
         msgid "MyText"
         msgstr "My translated text"
         `;
 
-        chai.expect(output[0].content.toString()).to.equalIgnoreSpaces(expectedResult);
+        let outputResult: string = output[0].content.toString();
+        outputResult = outputResult.replace(/(@criticalmanufacturing\/dev-i18n-transform) (\S+)/, "$1 _");
+
+        chai.expect(outputResult).to.equalIgnoreSpaces(expectedResult);
     });
 
 });
