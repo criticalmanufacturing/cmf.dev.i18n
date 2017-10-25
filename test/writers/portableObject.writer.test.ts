@@ -44,15 +44,15 @@ describe("Portable Object writer", () => {
         "MIME-Version: 1.0 \\n"
         "Content-Type: text/plain; charset=UTF-8\\n"
 
-        #: mocks\\duplicatedTextWithoutTranslationExample\\mock1.pt-PT.ts#TEXT
+        #: mocks${path.sep}duplicatedTextWithoutTranslationExample${path.sep}mock1.pt-PT.ts#TEXT
         msgid "MyText"
         msgstr "My translated text"
 
-        #: mocks\\duplicatedTextWithoutTranslationExample\\mock1.pt-PT.ts#TEXT_DUPLICATED
+        #: mocks${path.sep}duplicatedTextWithoutTranslationExample${path.sep}mock1.pt-PT.ts#TEXT_DUPLICATED
         msgid "MyText"
         msgstr "My translated text"
 
-        #: mocks\\duplicatedTextWithoutTranslationExample\\mock2.pt-PT.ts#TEXT
+        #: mocks${path.sep}duplicatedTextWithoutTranslationExample${path.sep}mock2.pt-PT.ts#TEXT
         msgid "MyText"
         msgstr "My translated text"
         `;
