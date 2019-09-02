@@ -22,6 +22,10 @@
         {
             "taskName": "build",
             "args": ["run", "build"]
+        },
+        {
+            "taskName": "compile",
+            "args": ["run", "compile"]
         }
     ]
 }

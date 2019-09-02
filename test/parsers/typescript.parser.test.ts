@@ -18,7 +18,7 @@ describe("Typescript parser", () => {
 
         let file = pack.files[0];
         chai.expect(file.uniqueFileName).to.contain("mock.ts");
-        chai.expect(file.messages).to.have.length(6);
+        chai.expect(file.messages).to.have.length(7);
 
         let messageOne = file.getMessage("ONE");
         chai.expect(messageOne).to.exist;
@@ -58,7 +58,8 @@ describe("Typescript parser", () => {
             "objects.WIZARD",
             "ONE",
             "pages.page.widget.ERROR_LOADING",
-            "pages.pageViewer.TITLE"
+            "pages.pageViewer.TITLE",
+            "test.test1.test2"
         ];
 
         let ts = new TypescriptParser("test", mocksPaths);
