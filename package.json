@@ -4,7 +4,7 @@
   "description": "i18n <--> gettext transform",
   "main": "src/bin/import.ts",
   "scripts": {
-    "build": "node node_modules/typescript/bin/tsc src/bin/import.ts",
+    "build": "node node_modules/typescript/bin/tsc",
     "compile": "node node_modules/typescript/bin/tsc src/index.ts",
     "start": "node node_modules/nodemon/bin/nodemon src/index.js --ignore test/",
     "test": "node node_modules/mocha/bin/mocha test/**/*.js test/*.js --timeout 5000",
