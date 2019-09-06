@@ -50,7 +50,6 @@ export class StructuredQueryLanguageConverter implements IConverteri18nMethods {
             let literal = {};
             let pack: string;
             let fileName: string;
-            let path: string;
 
             // Get text, culture and name of localized message
             let localizedMessageText = this.getLocalizedText(object);
@@ -268,14 +267,14 @@ export class StructuredQueryLanguageConverter implements IConverteri18nMethods {
             }
             // If data of file match "export default {}", replace "}"
             else if (data.match("export default {}")) {
-                let regEx = new RegExp(/}.*$/g);
+                let regEx = new RegExp(/}.*/g);
                 let textToFile = "\n\t" + ifLMDoesNotExist().slice(2, -1) + "};";
                 let text = beautify(data.replace(regEx, textToFile));
                 fs.writeFileSync(fileName, Buffer.from(text), { flag: "w" });
             }
             /*
              * If file looks like: "export default {"
-             *                      };"
+             *                      }"
              */
             else if (data.match("export default {\r\n}")) {
                 let regEx = "export default {\r\n}";
@@ -285,10 +284,18 @@ export class StructuredQueryLanguageConverter implements IConverteri18nMethods {
             }
             // Append in the end of file
             else {
-                let regEx = new RegExp(/,*\n}.*$/g);
-                let textToFile = ",\n\t" + ifLMDoesNotExist().slice(2, -1) + "};";
-                let text = beautify(data.replace(regEx, textToFile));
-                fs.writeFileSync(fileName, Buffer.from(text), { flag: "w" });
+                let regEx = new RegExp(/,\r\n};*/g);
+                if (data.match(regEx)) {
+                    let textToFile = ",\n\t" + ifLMDoesNotExist().slice(2, -1) + "};";
+                    let text = beautify(data.replace(regEx, textToFile));
+                    fs.writeFileSync(fileName, Buffer.from(text), { flag: "w" });
+                }
+                else {
+                    let regEx = new RegExp(/\r\n};*/g);
+                    let textToFile = ",\n\t" + ifLMDoesNotExist().slice(2, -1) + "};";
+                    let text = beautify(data.replace(regEx, textToFile));
+                    fs.writeFileSync(fileName, Buffer.from(text), { flag: "w" });
+                }
             }
         }
         catch (err) {

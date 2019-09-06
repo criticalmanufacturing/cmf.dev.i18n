@@ -20,6 +20,19 @@ describe("SQL Converter", () => {
             });
             chai.expect(path).to.be.equal(fileName);
         });
+        it("should append the new localized message in end of file", async () => {
+            let fileName = "./test/mocks/simpleExample/mock.default.ts";
+            let localizedMessage: IDataLocalizedMessages = {localizedMessageName: "test.simpleExample#SEVEN",
+                                                            localizedMessageText: `Seven`,
+                                                            cultureName: "en-US"};
+            let path = await sqlConverter.writeToFile(localizedMessage, null, fileName).then((output: string) => { return output; });
+
+            fs.readFile(fileName, function (err, data) {
+                chai.expect(fileName).to.exist;
+                chai.expect(data.toString()).to.include(`SEVEN: "Seven"\r\n}`);
+            });
+            chai.expect(path).to.equal(fileName);
+        });
     });
     describe("#writeToFile multilineExample", () => {
         it("should have new localized message written", async () => {
@@ -46,6 +59,27 @@ describe("SQL Converter", () => {
             fs.readFile(fileName, function (err, data) {
                 chai.expect(fileName).to.exist;
                 chai.expect(data.toString()).to.include(`test2: "ok"`);
+            });
+            chai.expect(path).to.equal(fileName);
+
+            localizedMessage = {localizedMessageName: "test.multilevelExample#actionButtons.preview.TEST",
+                                localizedMessageText: "Test",
+                                cultureName: "en-US"};
+            path = await sqlConverter.writeToFile(localizedMessage, null, fileName).then((output: string) => { return output; });
+
+            fs.readFile(fileName, function (err, data) {
+                chai.expect(data.toString()).to.include(`            TEST: "Test"`);
+            });
+            chai.expect(path).to.equal(fileName);
+
+            localizedMessage = {localizedMessageName: "test.multilevelExample#actionButtons.preview.newSection.TEST_SECTION",
+                                localizedMessageText: "New Section",
+                                cultureName: "en-US"};
+            path = await sqlConverter.writeToFile(localizedMessage, null, fileName).then((output: string) => { return output; });
+
+            fs.readFile(fileName, function (err, data) {
+                chai.expect(fileName).to.exist;
+                chai.expect(data.toString()).to.include(`preview: {\r\n            newSection: {\r\n                TEST_SECTION: "New Section"\r\n            }`);
             });
             chai.expect(path).to.equal(fileName);
         });

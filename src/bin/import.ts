@@ -43,7 +43,7 @@ export class Program {
     private getFilesFromPath(path: string, extension: string) {
         let dir = fs.readdirSync( path );
         return dir.filter( (elm: string) => elm.match(new RegExp(`^[A-z0-9]+\.${extension}$`, "ig")));
-      }
+    }
 
     //#endregion
 
@@ -180,9 +180,19 @@ export class Program {
                     let packagesResourcesArray = Array.from(filesForEachResourcesPath.keys());
                     // Fill map "contentForEachFile" with filename as key and respective content as value
                     for (let i = 0; i < packagesResourcesArray.length; i++) {
-                        let file: string = packagesResourcesArray[i] + "\\" + filesForEachResourcesPath.get(packagesResourcesArray[i]);
-                        let content: string = fs.readFileSync(file).toString();
-                        contentForEachFile.set(file, content);
+                        // If we have more than one resource file to the same path
+                        if (filesForEachResourcesPath.get(packagesResourcesArray[i]).length > 1) {
+                            for (const iterator of filesForEachResourcesPath.get(packagesResourcesArray[i])) {
+                                let file: string = packagesResourcesArray[i] + "\\" + iterator;
+                                let content: string = fs.readFileSync(file).toString();
+                                contentForEachFile.set(file, content);
+                            }
+                        }
+                        else {
+                            let file: string = packagesResourcesArray[i] + "\\" + filesForEachResourcesPath.get(packagesResourcesArray[i]);
+                            let content: string = fs.readFileSync(file).toString();
+                            contentForEachFile.set(file, content);
+                        }
                     }
                 }
                 let filesChanged: string[] = await resourcesConverter.writeToFile(localized, contentForEachFile, this.filesResourcesExtension);

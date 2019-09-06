@@ -147,7 +147,7 @@ export class ResourcesConverter implements IConverterResourcesMethods {
     // Read content of file
     let cultureFileContent = fs.readFileSync(cultureFile).toString();
     // If content of file doesn't include the localized message, the localized message is added in the end of file
-    if (cultureFileContent.match(`<data name="${localizedMessage.localizedMessageName}"`) == null) {
+    if (cultureFileContent.match(`<data name="${localizedMessage.localizedMessageName}"`) === null) {
       let stringToReplace: string = "</root>";
       let newLocalizedMessage = `  <data name="${localizedMessage.localizedMessageName}" xml:space="preserve">\r\n` +
         `    <value>${localizedMessage.localizedMessageText}</value>\r\n` +
@@ -155,8 +155,11 @@ export class ResourcesConverter implements IConverterResourcesMethods {
         `</root>`;
       let textToFile: string = cultureFileContent.replace(stringToReplace, newLocalizedMessage);
       fs.writeFileSync(cultureFile, Buffer.from(textToFile), { flag: "w" });
+      return cultureFile;
     }
-    return cultureFile;
+    else {
+      return null;
+    }
   }
 
   //#endregion
@@ -198,11 +201,11 @@ export class ResourcesConverter implements IConverterResourcesMethods {
                 `.${localized[message].cultureName}${filesResourcesExtension}`);
               // Check if file exists
               if (fs.existsSync(cultureFile)) {
-                // Add new localized message to file
-                this.addNewLocalizedMessage(cultureFile, localized[message]);
+                // Check if the localized message doesn't exist and add new localized message to file
+                let cultureFileName = this.addNewLocalizedMessage(cultureFile, localized[message]);
                 // Push the name of file changed
-                if (!filesChanged.includes(cultureFile)) {
-                  filesChanged.push(cultureFile);
+                if (cultureFileName !== null && !filesChanged.includes(cultureFileName)) {
+                  filesChanged.push(cultureFileName);
                 }
               } else {
                 // Create file
@@ -212,16 +215,16 @@ export class ResourcesConverter implements IConverterResourcesMethods {
                   }
                   console.log(`File ${cultureFile} created!`);
                 });
-                // Add new localized message to file
-                this.addNewLocalizedMessage(cultureFile, localized[message]);
+                // Check if the localized message doesn't exist and add new localized message to file
+                let cultureFileName = this.addNewLocalizedMessage(cultureFile, localized[message]);
                 // Push the name of file changed
-                if (!filesChanged.includes(cultureFile)) {
-                  filesChanged.push(cultureFile);
+                if (cultureFileName !== null && !filesChanged.includes(cultureFileName)) {
+                  filesChanged.push(cultureFileName);
                 }
               }
             }
           } else {
-            console.log(`Place to message ${localized[message].localizedMessageName} not found.`);
+            console.log(`Localized Message: ${localized[message].localizedMessageName} resource file was not found.`);
           }
         }
       }

@@ -11,7 +11,7 @@
             "request": "launch",
             "name": "Start Application",
             "program": "${workspaceRoot}/src/index.js",
-            "preLaunchTask": "compile",
+            "preLaunchTask": "build",
             "cwd": "${workspaceRoot}",
             "outFiles": []
         },
@@ -20,7 +20,7 @@
             "request": "launch",
             "name": "Debug i18n-import",
             "program": "${workspaceRoot}/src/bin/import.js",
-            "preLaunchTask": "build",
+            "preLaunchTask": "build2",
             "sourceMaps": true,
             "cwd": "${workspaceRoot}",
             "outFiles": []
@@ -49,7 +49,7 @@
             "name": "test",
             "type": "node",
             "request": "launch",
-            "preLaunchTask": "build",
+            "preLaunchTask": "build2",
             "cwd": "${workspaceRoot}",
             "args": [
                 "test.js"

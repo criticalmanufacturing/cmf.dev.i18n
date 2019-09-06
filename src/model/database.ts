@@ -94,14 +94,15 @@ export class DatabaseManagement implements IDatabaseMethods {
     public async getLocalizedMessages(connectionToDatabase: IConnectDatabase, sqlCommand: string, packages: string[]): Promise<IDataLocalizedMessages[]> {
 
         const arrayTyped: IDataLocalizedMessages[] = [];
+        let filteredSqlCommand: string = sqlCommand;
 
         // Get connection to database
         let connected = await this.getConnection(connectionToDatabase);
 
         for (let index in packages) {
-            sqlCommand = sqlCommand + `'${packages[index]}.%'`;
+            filteredSqlCommand = sqlCommand + `'${packages[index]}.%'`;
             // Execute query to get all localized messages
-            let result = await connected.request().query(sqlCommand);
+            let result = await connected.request().query(filteredSqlCommand);
 
             if (result.recordset.length > 0) {
                 // Put each localized messaged received from database into an array
@@ -112,6 +113,7 @@ export class DatabaseManagement implements IDatabaseMethods {
                                     });
                 }
             }
+            filteredSqlCommand = sqlCommand;
         }
 
         // Close connection to database

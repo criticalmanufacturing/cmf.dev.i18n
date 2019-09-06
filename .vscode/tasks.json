@@ -24,8 +24,8 @@
             "args": ["run", "build"]
         },
         {
-            "taskName": "compile",
-            "args": ["run", "compile"]
+            "taskName": "build2",
+            "args": ["run", "build2"]
         }
     ]
 }
