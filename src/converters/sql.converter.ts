@@ -284,14 +284,14 @@ export class StructuredQueryLanguageConverter implements IConverteri18nMethods {
             }
             // Append in the end of file
             else {
-                let regEx = new RegExp(/,\r\n};*/g);
+                let regEx = new RegExp(/,\r*\n};*/g);
                 if (data.match(regEx)) {
                     let textToFile = ",\n\t" + ifLMDoesNotExist().slice(2, -1) + "};";
                     let text = beautify(data.replace(regEx, textToFile));
                     fs.writeFileSync(fileName, Buffer.from(text), { flag: "w" });
                 }
                 else {
-                    let regEx = new RegExp(/\r\n};*/g);
+                    let regEx = new RegExp(/\r*\n};*/g);
                     let textToFile = ",\n\t" + ifLMDoesNotExist().slice(2, -1) + "};";
                     let text = beautify(data.replace(regEx, textToFile));
                     fs.writeFileSync(fileName, Buffer.from(text), { flag: "w" });

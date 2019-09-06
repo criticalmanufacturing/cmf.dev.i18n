@@ -29,7 +29,7 @@ describe("SQL Converter", () => {
 
             fs.readFile(fileName, function (err, data) {
                 chai.expect(fileName).to.exist;
-                chai.expect(data.toString()).to.include(`SEVEN: "Seven"\r\n}`);
+                chai.expect(data.toString()).to.include(`SEVEN: "Seven"`);
             });
             chai.expect(path).to.equal(fileName);
         });
