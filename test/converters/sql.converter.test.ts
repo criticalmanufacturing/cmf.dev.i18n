@@ -79,7 +79,7 @@ describe("SQL Converter", () => {
 
             fs.readFile(fileName, function (err, data) {
                 chai.expect(fileName).to.exist;
-                chai.expect(data.toString()).to.include(`preview: {\r\n            newSection: {\r\n                TEST_SECTION: "New Section"\r\n            }`);
+                chai.expect(data.toString()).to.include(`preview: {\n            newSection: {\n                TEST_SECTION: "New Section"\n            }`);
             });
             chai.expect(path).to.equal(fileName);
         });
